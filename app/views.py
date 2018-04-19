@@ -7,7 +7,7 @@ This file creates your application.
 
 from app import app
 from flask import render_template, request
-
+from controllers import form_errors
 ###
 # Routing for your application.
 ###
@@ -19,20 +19,7 @@ def index():
     return render_template('index.html')
 
 
-# Here we define a function to collect form errors from Flask-WTF
-# which we can later use
-def form_errors(form):
-    error_messages = []
-    """Collects form errors"""
-    for field, errors in form.errors.items():
-        for error in errors:
-            message = u"Error in the %s field - %s" % (
-                    getattr(form, field).label.text,
-                    error
-                )
-            error_messages.append(message)
 
-    return error_messages
 
 
 ###
