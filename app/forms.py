@@ -1,9 +1,9 @@
-from wtforms import StringField, PasswordField, HiddenField, BooleanField, IntegerField
-from wtforms.validators import Required, Length, Email, EqualTo, DataRequired
-from flask_wtf import FlaskForm, RecaptchaField
+from wtforms import StringField
+from wtforms.validators import Required 
+from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 
-ALLOWED_EXTENSIONS = set(['txt','pdf','png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 class upload_Form(FlaskForm):
     description = StringField('Description', validators=[Required('Please provide a description')])
