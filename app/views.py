@@ -4,10 +4,12 @@ Jinja2 Documentation:    http://jinja.pocoo.org/2/documentation/
 Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
-
+import os
 from app import app
-from flask import render_template, request
+from flask import render_template, request ,jsonify
 from controllers import form_errors
+from forms import upload_Form
+from werkzeug.utils import secure_filename
 ###
 # Routing for your application.
 ###
@@ -18,15 +20,24 @@ def index():
     """Render website's initial page and let VueJS take over."""
     return render_template('index.html')
 
-
-
-
-
+@app.route('/api/upload',methods=['POST'])
+def upload():
+    form=upload_Form()
+    if request.method == 'POST' and form.validate_on_submit():
+        description = request.form['description'] 
+        file = request.form['file'] 
+        if file.filename == '':
+            error='No selected file'
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            flash('File Saved', 'success')
+            return jsonify({'message': 'File upload successful', 'file': file, 'description': description})
+    else:
+        return jsonify({'errors':form_errors(form)})
 ###
 # The functions below should be applicable to all Flask apps.
 ###
-
-
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
     """Send your static text file."""

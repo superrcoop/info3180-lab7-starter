@@ -11,3 +11,7 @@ venv/
 
 # PyCharm
 .idea
+
+# Flask Migrations 
+/migrations
+
